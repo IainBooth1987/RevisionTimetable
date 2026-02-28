@@ -367,7 +367,7 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
     <div class="hrow">
       <div>
         <h1 id="greeting">Revision Planner</h1>
-        <div class="sub" id="greet-sub">BIZ-OMICS · A-Level</div>
+        <div class="sub" id="greet-sub">BIZ-OMICS · Revision Planner</div>
       </div>
       <button class="btn btn-ghost btn-sm" onclick="doExport()">⬇ JSON</button>
       <button class="btn btn-ghost btn-sm" onclick="doExportCSV()">📊 CSV</button>
@@ -403,9 +403,12 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
     </div>
 
     <div id="h-setup" class="card" style="display:none;background:var(--amber-lt);border-color:var(--amber)">
-      <div class="card-title">👋 Welcome!</div>
-      <p style="font-size:14px;color:var(--slate-md);margin-bottom:12px">Set up your subjects to get started with your revision plan.</p>
-      <button class="btn btn-primary btn-full" onclick="nav('subjects')">Get Started →</button>
+      <div class="card-title" id="h-setup-title">👋 Welcome!</div>
+      <p style="font-size:14px;color:var(--slate-md);margin-bottom:12px" id="h-setup-text">Add your subjects to get started with your revision plan.</p>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="nav('subjects')">➕ Add Subjects</button>
+        <button class="btn btn-ghost" onclick="openSettings()">⚙ Setup</button>
+      </div>
     </div>
   </div>
 </div>
@@ -416,7 +419,7 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
 <div id="view-subjects" class="view">
   <div class="pg-header">
     <div class="hrow">
-      <div><h1>📚 Subjects</h1><div class="sub">Manage your A-Levels</div></div>
+      <div><h1>📚 Subjects</h1><div class="sub" id="subjects-sub">Manage your subjects</div></div>
       <button class="btn btn-ghost btn-sm" onclick="openSettings()">⚙ Setup</button>
     </div>
   </div>
@@ -580,7 +583,7 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
   <div class="pg-header">
     <div class="hrow">
       <div><h1>📋 Past Papers</h1><div class="sub">Track practice papers</div></div>
-      <button class="btn btn-ghost btn-sm" onclick="openModal('m-addpaper')">＋ Add</button>
+      <button class="btn btn-ghost btn-sm" onclick="openAddPaper()">＋ Add</button>
     </div>
   </div>
   <div class="content">
@@ -622,7 +625,7 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
     <div class="modal-title">Add Subject</div>
     <div class="fg"><label>Subject Name</label><input type="text" id="ns-name" placeholder="e.g. Economics"></div>
     <div class="fg"><label>Exam Board</label>
-      <select id="ns-board"><option>AQA</option><option>Edexcel</option><option>OCR</option><option>WJEC</option><option>Other</option></select>
+      <select id="ns-board"><option>AQA</option><option>Edexcel</option><option>OCR</option><option>WJEC</option><option>Edexcel IGCSE</option><option>Cambridge IGCSE</option><option>Other</option></select>
     </div>
     <div class="fg"><label>Exam Date (earliest paper)</label><input type="date" id="ns-date"></div>
     <div class="fg"><label>Subject Colour</label><input type="color" id="ns-color" value="#d97706"></div>
@@ -649,7 +652,7 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
     <input type="hidden" id="es-id">
     <div class="fg"><label>Subject Name</label><input type="text" id="es-name"></div>
     <div class="fg"><label>Exam Board</label>
-      <select id="es-board"><option>AQA</option><option>Edexcel</option><option>OCR</option><option>WJEC</option><option>Other</option></select>
+      <select id="es-board"><option>AQA</option><option>Edexcel</option><option>OCR</option><option>WJEC</option><option>Edexcel IGCSE</option><option>Cambridge IGCSE</option><option>Other</option></select>
     </div>
     <div class="fg"><label>Exam Date</label><input type="date" id="es-date"></div>
     <div class="fg"><label>Confidence</label>
@@ -669,7 +672,13 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
     <div class="modal-title">⚙ Student Setup</div>
     <div class="fg"><label>Your Name</label><input type="text" id="set-name" placeholder="First name"></div>
     <div class="fg"><label>Year Group</label>
-      <select id="set-year"><option value="Year 12">Year 12</option><option value="Year 13">Year 13</option></select>
+      <select id="set-year">
+        <option value="Year 9">Year 9 (GCSE)</option>
+        <option value="Year 10">Year 10 (GCSE)</option>
+        <option value="Year 11">Year 11 (GCSE)</option>
+        <option value="Year 12">Year 12 (A-Level / AS)</option>
+        <option value="Year 13">Year 13 (A-Level)</option>
+      </select>
     </div>
     <div class="fg"><label>First Exam Date</label><input type="date" id="set-exam"></div>
     <div class="fg"><label>Daily Study Goal (hours)</label><input type="number" id="set-goal" min="1" max="12" value="4"></div>
@@ -754,7 +763,7 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
     <div class="handle"></div>
     <div class="modal-title">Add Past Paper</div>
     <div class="fg"><label>Subject</label><select id="pp-subj"></select></div>
-    <div class="fg"><label>Year</label><input type="number" id="pp-year" value="2024" min="2010" max="2025"></div>
+    <div class="fg"><label>Year</label><input type="number" id="pp-year" value="2024" min="2005" max="2025"></div>
     <div class="fg"><label>Paper</label>
       <select id="pp-paper"><option>Paper 1</option><option>Paper 2</option><option>Paper 3</option><option>Paper 4</option><option>Specimen</option></select>
     </div>
@@ -795,6 +804,78 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════
+     ONBOARDING MODAL (first-run)
+═══════════════════════════════════════════════════ -->
+<div class="overlay" id="m-onboard" style="align-items:flex-end">
+  <div class="sheet" style="border-radius:24px 24px 0 0">
+    <div class="handle"></div>
+    <!-- Step indicator -->
+    <div id="ob-steps" style="display:flex;justify-content:center;gap:6px;margin-bottom:18px">
+      <div id="ob-dot-1" style="width:8px;height:8px;border-radius:50%;background:var(--amber-dk);transition:all .2s"></div>
+      <div id="ob-dot-2" style="width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .2s"></div>
+      <div id="ob-dot-3" style="width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .2s"></div>
+    </div>
+    <div id="ob-step-1">
+      <div style="text-align:center;padding:8px 0 18px">
+        <div style="font-size:52px;margin-bottom:10px">👋</div>
+        <div class="modal-title" style="font-size:22px;margin-bottom:6px">Welcome to BIZ-OMICS<br>Revision Planner</div>
+        <p style="font-size:14px;color:var(--slate-md);line-height:1.5">Let's get you set up in 30 seconds so everything is tailored to you.</p>
+      </div>
+      <div class="fg"><label>Your first name</label><input type="text" id="ob-name" placeholder="e.g. Alex" autocomplete="given-name"></div>
+      <div class="fg"><label>Year group</label>
+        <select id="ob-year">
+          <option value="">— Select your year —</option>
+          <option value="Year 9">Year 9 (GCSE)</option>
+          <option value="Year 10">Year 10 (GCSE)</option>
+          <option value="Year 11">Year 11 (GCSE)</option>
+          <option value="Year 12">Year 12 (A-Level / AS)</option>
+          <option value="Year 13">Year 13 (A-Level)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full" style="padding:14px;font-size:16px" onclick="obNext1()">Continue →</button>
+    </div>
+    <!-- Step 2: Exam date -->
+    <div id="ob-step-2" style="display:none">
+      <div style="text-align:center;padding:8px 0 18px">
+        <div style="font-size:52px;margin-bottom:10px">📅</div>
+        <div class="modal-title" style="font-size:20px;margin-bottom:6px">When's your first exam?</div>
+        <p style="font-size:14px;color:var(--slate-md);line-height:1.5">This powers the countdown and helps the Smart Plan prioritise your revision.</p>
+      </div>
+      <div class="fg"><label>First exam date</label><input type="date" id="ob-exam"></div>
+      <div class="fg"><label>Daily study goal (hours)</label>
+        <select id="ob-goal">
+          <option value="2">2 hours — light</option>
+          <option value="3">3 hours</option>
+          <option value="4" selected>4 hours — recommended</option>
+          <option value="5">5 hours</option>
+          <option value="6">6 hours — intensive</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full" style="padding:14px;font-size:16px" onclick="obNext2()">Continue →</button>
+      <button class="btn btn-ghost btn-full" style="margin-top:7px" onclick="obSkip2()">Skip for now</button>
+    </div>
+    <!-- Step 3: Done -->
+    <div id="ob-step-3" style="display:none">
+      <div style="text-align:center;padding:8px 0 24px">
+        <div style="font-size:52px;margin-bottom:10px">🚀</div>
+        <div class="modal-title" style="font-size:20px;margin-bottom:6px" id="ob-done-title">You're all set!</div>
+        <p style="font-size:14px;color:var(--slate-md);line-height:1.5;margin-bottom:18px" id="ob-done-sub">Head to Subjects to add your subjects, then build your timetable.</p>
+        <div style="background:var(--amber-lt);border-radius:var(--r);padding:14px;text-align:left;margin-bottom:18px">
+          <div style="font-size:12px;font-weight:700;color:var(--amber-dk);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Quick start guide</div>
+          <div style="font-size:13px;color:var(--slate-md);display:flex;flex-direction:column;gap:7px">
+            <div>📚 <strong>Subjects</strong> — add your subjects &amp; topics</div>
+            <div>🗓 <strong>Timetable</strong> — use Smart Plan to auto-fill your week</div>
+            <div>⏱ <strong>Timer</strong> — start a session and track your hours</div>
+            <div>📋 <strong>Papers</strong> — log past papers and track scores</div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-full" style="padding:14px;font-size:16px" onclick="obFinish()">Let's go! →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Log Timer Session -->
 <div class="overlay" id="m-logsess">
   <div class="sheet">
@@ -821,7 +902,7 @@ a{color:var(--amber-dk);text-decoration:none;font-weight:600}
 /* ── DATA ───────────────────────────────────────── */
 const KEY = 'revPlannerData';
 const DEF = {
-  studentInfo:{name:'',academicYear:'Year 13',examSession:'may-june',firstExamDate:'',timetableStartDate:''},
+  studentInfo:{name:'',academicYear:'Year 11',examSession:'may-june',firstExamDate:'',timetableStartDate:''},
   preferences:{dailyGoal:4,sessionLength:50,breakLength:10,studyPattern:'flexible'},
   subjects:[],sessions:[],pastPapers:[],
   stats:{totalHours:0,streak:0,completedSessions:0,lastStudyDate:null},
@@ -849,6 +930,13 @@ let D=load();
 
 /* ── UTILS ──────────────────────────────────────── */
 function today(){return new Date().toISOString().split('T')[0]}
+function getLevelLabel(){
+  const yr=D.studentInfo.academicYear||'';
+  if(yr==='Year 9'||yr==='Year 10'||yr==='Year 11')return'GCSE';
+  if(yr==='Year 12')return'AS / A-Level';
+  if(yr==='Year 13')return'A-Level';
+  return'Revision';
+}
 function getDaysUntil(ds){
   if(!ds)return null;
   const t=new Date();t.setHours(0,0,0,0);
@@ -865,7 +953,9 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 function openModal(id){document.getElementById(id).classList.add('open')}
 function closeModal(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.overlay').forEach(el=>{
-  el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open')});
+  el.addEventListener('click',e=>{
+    if(e.target===el&&el.id!=='m-onboard')el.classList.remove('open');
+  });
 });
 
 /* ── NAVIGATION ─────────────────────────────────── */
@@ -936,7 +1026,9 @@ function renderHome(){
   const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
   const name=D.studentInfo.name;
   document.getElementById('greeting').textContent=name?`Hi, ${name} 👋`:h<12?'Good morning 👋':h<17?'Good afternoon 👋':'Good evening 👋';
-  document.getElementById('greet-sub').textContent='BIZ-OMICS · A-Level Revision Planner';
+  document.getElementById('greet-sub').textContent='BIZ-OMICS · Revision Planner';
+  // Update subjects subtitle if visible
+  const subSub=document.getElementById('subjects-sub');if(subSub)subSub.textContent='Manage your '+getLevelLabel()+' subjects';
 
   // Countdown
   document.getElementById('cd-days').textContent=getDaysUntil(D.studentInfo.firstExamDate)??'—';
@@ -972,6 +1064,11 @@ function renderHome(){
   if(D.subjects.length===0){
     snap.innerHTML=`<div class="empty"><div class="ei">➕</div><p><a onclick="nav('subjects')">Add your subjects →</a></p></div>`;
     document.getElementById('h-setup').style.display='block';
+    const level=getLevelLabel();
+    const titleEl=document.getElementById('h-setup-title');
+    const textEl=document.getElementById('h-setup-text');
+    if(titleEl)titleEl.textContent=`👋 Welcome${D.studentInfo.name?' '+D.studentInfo.name:''}!`;
+    if(textEl)textEl.textContent=`Add your ${level} subjects to get started with your revision plan.`;
   }else{
     document.getElementById('h-setup').style.display='none';
     snap.innerHTML=D.subjects.slice(0,4).map(s=>{
@@ -1102,7 +1199,7 @@ function toggleTopic(sId,tId){
 /* ── SETTINGS ───────────────────────────────────── */
 function openSettings(){
   document.getElementById('set-name').value=D.studentInfo.name||'';
-  document.getElementById('set-year').value=D.studentInfo.academicYear||'Year 13';
+  document.getElementById('set-year').value=D.studentInfo.academicYear||'Year 11';
   document.getElementById('set-exam').value=D.studentInfo.firstExamDate||'';
   document.getElementById('set-goal').value=D.preferences.dailyGoal||4;
   document.getElementById('set-sess').value=D.preferences.sessionLength||50;
@@ -1660,23 +1757,33 @@ function renderWellbeing(){
   // Subject-aware tips
   const UNIVERSAL_TIPS=[['🧠','Take a 10-min break every hour to maintain focus'],['👀','20-20-20 rule: every 20 min, look 20 ft away for 20 sec'],['💪','Stretch or walk between sessions to boost circulation'],['🍎','Eat balanced meals — blood sugar affects concentration'],['😌','5-10 min mindfulness or meditation daily reduces anxiety'],['😴','Aim for 8-9 hours sleep — memory consolidates during sleep'],['📵','Phone on Do Not Disturb during revision sessions'],['👥','Teach a concept to a friend to deepen your own understanding']];
   const SUBJECT_TIPS={
-    economics:[['📈','Draw and label every diagram before writing explanations'],['⛓','Chain your analysis: cause → effect → further effect → evaluation'],['🌍','Link theory to real-world examples (UK data, current events)'],['🔢','In calculation questions, always show your working step by step'],['⚖️','For 25-mark essays: argue for AND against before evaluating']],
+    economics:[['📈','Draw and label every diagram before writing explanations'],['⛓','Chain your analysis: cause → effect → further effect → evaluation'],['🌍','Link theory to real-world examples (UK data, current events)'],['🔢','In calculation questions, always show your working step by step'],['⚖️','For extended answers: argue for AND against before evaluating']],
     business:[['💼','Use real business examples — name actual companies like Apple, Tesla, Tesco'],['🔄','For strategy questions, consider all stakeholders separately'],['📊','Interpret data in context — what does it mean for this business?'],['🧩','Link functional areas: operations affects finance, marketing affects HR'],['⭐','SWOT/PESTLE are starting points — always reach a justified judgement']],
     maths:[['✏️','Always show your method — method marks can save you'],['🔁','Check answers by substituting back into the original equation'],['⏱','If stuck, move on and return — don\'t lose time on one question'],['📐','Sketch graphs first, then identify key features analytically'],['🎯','In statistics questions, always interpret results in context']],
     english:[['📖','Quote accurately and precisely — fewer, well-chosen quotes are better'],['🔍','Analyse language: why this word/technique, what is its effect?'],['📝','Plan your essay in 5 minutes — it saves 15 minutes of rambling'],['🧭','Structure: point, evidence, analyse, evaluate for each paragraph'],['🗣','Consider the writer\'s purpose and context in every response']],
-    history:[['📅','Dates matter for sequencing arguments and establishing causation'],['⚖️','Balance your argument — consider multiple factors before judging'],['🔎','Use specific evidence not vague generalisations'],['🔄','Link periods: how did earlier events shape later ones?'],['💬','Direct quotes from sources add authority to your argument']],
-    science:[['🔬','Recall command words: describe = what, explain = why, evaluate = weigh up'],['📊','Graphs: always label axes with units, use the full scale available'],['⚗️','For 6-mark questions, cover three linked points with evidence'],['🔢','Check significant figures and units in every calculation answer'],['🧪','Practical questions: identify the independent and dependent variable']]
+    history:[['📅','Dates matter for sequencing arguments and establishing causation'],['⚖️','Balance your argument — consider multiple factors before judging'],['🔎','Use specific evidence not vague generalisations'],['🔄','Link periods: how did earlier events shape later ones?'],['💬','Specific named examples always score better than vague references']],
+    science:[['🔬','Command words: describe = what, explain = why, evaluate = weigh up'],['📊','Graphs: always label axes with units, use the full scale available'],['⚗️','For 6-mark questions, cover three linked points with full explanation'],['🔢','Check significant figures and units in every calculation answer'],['🧪','Required practicals: know variables — independent, dependent, control']],
+    geography:[['🗺','Always refer to specific named places with supporting data'],['📉','For graphs: identify the trend AND explain the cause'],['🌦','Learn your case studies thoroughly — examiners reward specific detail'],['📐','Structure answers: describe → explain → evaluate'],['🌍','Human and physical geography both require real case study evidence']],
+    languages:[['🗣','Speak your answers aloud — pronunciation and recall improve together'],['📝','Learn opinion phrases in the target language to boost marks'],['📖','Read a short passage in your target language daily'],['🔢','Practise past, present, and future tenses — all appear in exams'],['🎧','Listen to native content (music, short clips) to train your ear']],
+    rs:[['📖','Know your key scholars and quotations for each topic'],['⚖️','Always present both sides before reaching your own judgement'],['🔤','Define technical terms clearly at the start of extended answers'],['🧠','Apply ethical theories (utilitarianism, natural law etc.) to scenarios'],['💡','For evaluate questions: reasons for, reasons against, then conclude']],
+    computing:[['💻','Trace tables: work through algorithms step by step on paper'],['🔣','Know your data types: integer, string, Boolean, float'],['🔒','Cybersecurity: always consider both prevention AND detection'],['📐','Binary and hex: practise conversions until they are automatic'],['🧩','Decompose big problems into sub-problems before writing any code']],
+    art:[['🎨','Annotate your sketchbook — examiners reward written reflection'],['🖼','Research artists fully: style, context, influence, technique'],['📸','Document your creative process at every stage'],['✏️','Practise observational drawing regularly — it underpins all work'],['💡','Show experimentation: try each technique in multiple ways']],
   };
-  // Match subjects by keyword
+  // Match subjects by keyword — works for both GCSE and A-Level
   let extraTips=[];
   D.subjects.forEach(s=>{
     const n=s.name.toLowerCase();
     if(n.includes('econ'))extraTips.push(...(SUBJECT_TIPS.economics||[]));
     if(n.includes('business')||n.includes('biz'))extraTips.push(...(SUBJECT_TIPS.business||[]));
     if(n.includes('math'))extraTips.push(...(SUBJECT_TIPS.maths||[]));
-    if(n.includes('english')||n.includes('lit'))extraTips.push(...(SUBJECT_TIPS.english||[]));
+    if(n.includes('english')||n.includes('lit')||n.includes('lang'))extraTips.push(...(SUBJECT_TIPS.english||[]));
     if(n.includes('hist'))extraTips.push(...(SUBJECT_TIPS.history||[]));
-    if(n.includes('bio')||n.includes('chem')||n.includes('phys')||n.includes('science'))extraTips.push(...(SUBJECT_TIPS.science||[]));
+    if(n.includes('bio')||n.includes('chem')||n.includes('phys')||n.includes('science')||n.includes('combined'))extraTips.push(...(SUBJECT_TIPS.science||[]));
+    if(n.includes('geog'))extraTips.push(...(SUBJECT_TIPS.geography||[]));
+    if(n.includes('french')||n.includes('spanish')||n.includes('german')||n.includes('mfl')||n.includes('mandarin')||n.includes('italian'))extraTips.push(...(SUBJECT_TIPS.languages||[]));
+    if(n==='rs'||n.includes('religious')||n.includes('ethics')||n.includes('philosophy'))extraTips.push(...(SUBJECT_TIPS.rs||[]));
+    if(n.includes('comput')||n.includes('ict'))extraTips.push(...(SUBJECT_TIPS.computing||[]));
+    if(n.includes('art')||n.includes('design')||n.includes('photography')||n.includes('textil'))extraTips.push(...(SUBJECT_TIPS.art||[]));
   });
   // Deduplicate and combine
   const seenTips=new Set();
@@ -1910,13 +2017,74 @@ function delPaper(id){
 }
 
 /* ══════════════════════════════════════════════════
+   ONBOARDING
+══════════════════════════════════════════════════ */
+function isFirstRun(){
+  // First run if no name AND no subjects AND no exam date set
+  return !D.studentInfo.name && D.subjects.length===0 && !D.studentInfo.firstExamDate;
+}
+
+function obSetDot(n){
+  [1,2,3].forEach(i=>{
+    const d=document.getElementById('ob-dot-'+i);
+    if(d)d.style.background=i===n?'var(--amber-dk)':i<n?'var(--amber)':'var(--border)';
+  });
+}
+
+function obNext1(){
+  const name=document.getElementById('ob-name').value.trim();
+  const year=document.getElementById('ob-year').value;
+  if(!year){showToast('Please select your year group');return;}
+  D.studentInfo.name=name;
+  D.studentInfo.academicYear=year;
+  document.getElementById('ob-step-1').style.display='none';
+  document.getElementById('ob-step-2').style.display='block';
+  obSetDot(2);
+  const yr=new Date().getFullYear();
+  const examYr=new Date().getMonth()>=9?yr+1:yr;
+  document.getElementById('ob-exam').value=`${examYr}-05-15`;
+}
+
+function obNext2(){
+  const exam=document.getElementById('ob-exam').value;
+  const goal=document.getElementById('ob-goal').value;
+  if(exam)D.studentInfo.firstExamDate=exam;
+  D.preferences.dailyGoal=parseInt(goal)||4;
+  obShowDone();
+}
+
+function obSkip2(){
+  obShowDone();
+}
+
+function obShowDone(){
+  document.getElementById('ob-step-2').style.display='none';
+  document.getElementById('ob-step-3').style.display='block';
+  obSetDot(3);
+  const name=D.studentInfo.name;
+  const level=getLevelLabel();
+  document.getElementById('ob-done-title').textContent=name?`You're all set, ${name}!`:"You're all set!";
+  document.getElementById('ob-done-sub').textContent=`Your ${level} revision planner is ready. Add your subjects to get started.`;
+}
+
+function obFinish(){
+  save();
+  closeModal('m-onboard');
+  renderHome();
+  // Send them straight to subjects so they can add their first subject
+  nav('subjects');
+}
+
+/* ══════════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════════ */
 function init(){
   ensureStartDate();
   renderHome();
-  // Wire settings button on subjects page
-
+  if(isFirstRun()){
+    // Small delay so the home view renders visibly behind the sheet
+    setTimeout(()=>openModal('m-onboard'),120);
+  }
 }
 init();
 </script>
